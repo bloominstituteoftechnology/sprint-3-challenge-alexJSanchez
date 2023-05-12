@@ -66,7 +66,7 @@
         }
         getEvens() {
           const getEvens = [];
-          console.log(this.ints);
+
           for (let i = 0; i < this.ints.length; i++) {
             const number = this.ints[i] % 2;
             if (number == 0) {
@@ -77,7 +77,7 @@
         }
         getNegatives() {
           const getNegatives = [];
-          console.log(this.ints);
+
           for (let i = 0; i < this.ints.length; i++) {
             if (this.ints[i] < 0) {
               getNegatives.push(this.ints[i]);
@@ -87,7 +87,7 @@
         }
         getAllSquared() {
           const getAllSquared = [];
-          console.log(this.ints);
+
           for (let i = 0; i < this.ints.length; i++) {
             const number = this.ints[i] * this.ints[i];
             getAllSquared.push(number);
@@ -141,11 +141,35 @@
           this.safety = true;
         }
         shoot() {
-          if (this.loadedProjectiles === 0 || this.safety) {
+          if (this.loadedProjectiles > 0 && !this.safety) {
+            this.loadedProjectiles--;
+            return "Bang!";
+          } else {
             return "Click!";
           }
-          this.loadedProjectiles--;
-          return "Bang!";
+        }
+        reload(bullets) {
+          let ammo = this.loadedProjectiles + bullets;
+          if (typeof bullets != "number" || bullets <= 0) {
+            return "Error reloading!";
+          } else {
+            if (ammo > this.totalProjectiles) {
+              this.loadedProjectiles = this.totalProjectiles;
+              return `${this.loadedProjectiles} projectiles left!`;
+            } else {
+              this.loadedProjectiles += bullets;
+              return `${this.loadedProjectiles} projectiles left!`;
+            }
+          }
+        }
+        toggleSafety() {
+          if (!this.safety) {
+            this.safety = true;
+            return "Safety enabled!";
+          } else {
+            this.safety = false;
+            return "Safety disabled!";
+          }
         }
       }
 
@@ -217,7 +241,44 @@
           });
         }
         work() {
-          console.log(this.ants);
+          if (this.ants.length === 0) {
+            return "No ants here. Did you work them to death?";
+          }
+
+          let antsWorked = 0;
+
+          for (let i = 0; i < this.ants.length; i++) {
+            const ant = this.ants[i];
+            ant.health -= 20;
+
+            if (ant.health <= 0) {
+              this.ants.splice(i, 1);
+              i--; // Decrement i to account for the removed ant
+            } else {
+              antsWorked++;
+            }
+          }
+
+          return `${antsWorked} ants starting work!`;
+        }
+
+        feed(name) {
+          let antsFed = 0;
+
+          for (let i = 0; i < this.ants.length; i++) {
+            const ant = this.ants[i];
+
+            if (ant.name === name) {
+              ant.health += 15;
+              antsFed++;
+            }
+          }
+
+          if (antsFed === 0) {
+            return `${name} not found!`;
+          }
+
+          return "Yum!";
         }
       }
 
