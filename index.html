@@ -248,18 +248,13 @@
           if (this.ants.length === 0) {
             return "No ants here. Did you work them to death?";
           }
-          let antsWorked = 0;
-          for (let i = 0; i < this.ants.length; i++) {
-            const ant = this.ants[i];
+          this.ants.forEach((ant) => {
             ant.health -= 20;
             if (ant.health <= 0) {
-              this.ants.splice(i, 1);
-              i--; // Decrement i to account for the removed ant
-            } else {
-              antsWorked++;
+              this.ants = this.ants.filter((a) => a !== ant);
             }
-          }
-          return `${antsWorked} ants starting work!`;
+          });
+          return `${this.ants.length} ants starting work!`;
         }
         feed(name) {
           let antsFed = 0;
