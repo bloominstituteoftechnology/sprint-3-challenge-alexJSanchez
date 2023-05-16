@@ -244,18 +244,20 @@
             return { name: ant, health: 100 };
           });
         }
+
         work() {
-          if (this.ants.length === 0) {
-            return "No ants here. Did you work them to death?";
-          }
           this.ants.forEach((ant) => {
-            ant.health -= 20;
             if (ant.health <= 0) {
               this.ants = this.ants.filter((a) => a !== ant);
             }
+            ant.health -= 20;
           });
+          if (this.ants.length === 0) {
+            return "No ants here. Did you work them to death?";
+          }
           return `${this.ants.length} ants starting work!`;
         }
+
         feed(name) {
           let antsFed = 0;
           for (let i = 0; i < this.ants.length; i++) {
