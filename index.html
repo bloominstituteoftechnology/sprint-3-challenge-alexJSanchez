@@ -231,7 +231,6 @@
         //      farm.ants;         // evaluates to [{name: 'Jess', health: 95}, {name: 'Blake', health: 80}]
         // 👉 HINT: when replacing a list with a modified list of the same length you can use map:
         //      let list = ['a','b','c']
-        //      list = list.map(item => (item === "a" ? item + item : item))
         //      console.log(list) // prints ["aa","b","c"]
         // 👉 HINT: when replacing a list with a filtered list you can use filter:
         //      let list = ['a','b','c']
@@ -246,16 +245,22 @@
         }
 
         work() {
-          this.ants.forEach((ant) => {
-            if (ant.health <= 0) {
-              this.ants = this.ants.filter((a) => a !== ant);
-            }
-            ant.health -= 20;
-          });
           if (this.ants.length === 0) {
             return "No ants here. Did you work them to death?";
           }
-          return `${this.ants.length} ants starting work!`;
+
+          const numberOfAnts = this.ants.length;
+
+          this.ants = this.ants.map((ant) => {
+            ant.health -= 20;
+            return ant;
+          });
+
+          this.ants = this.ants.filter((ant) => ant.health > 0);
+
+          return `${numberOfAnts} ant${
+            numberOfAnts >= 1 ? "s" : ""
+          } starting work!`;
         }
 
         feed(name) {
